@@ -40,6 +40,9 @@ import com.esotericsoftware.spine.attachments.SkeletonAttachment;
 import com.esotericsoftware.spine.attachments.MeshAttachment;
 
 public class SkeletonMeshRenderer extends SkeletonRenderer<PolygonSpriteBatch> {
+	
+	public boolean useSlotBlending = true;
+	
 	static private final short[] quadTriangles = {0, 1, 2, 2, 3, 0};
 
 	@SuppressWarnings("null")
@@ -91,7 +94,7 @@ public class SkeletonMeshRenderer extends SkeletonRenderer<PolygonSpriteBatch> {
 
 			if (texture != null) {
 				BlendMode slotBlendMode = slot.data.getBlendMode();
-				if (slotBlendMode != blendMode) {
+				if (useSlotBlending && slotBlendMode != blendMode) {
 					blendMode = slotBlendMode;
 					batch.setBlendFunction(blendMode.getSource(premultipliedAlpha), blendMode.getDest());
 				}
