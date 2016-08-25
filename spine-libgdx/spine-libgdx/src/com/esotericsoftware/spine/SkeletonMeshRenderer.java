@@ -35,9 +35,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.spine.attachments.Attachment;
+import com.esotericsoftware.spine.attachments.MeshAttachment;
 import com.esotericsoftware.spine.attachments.RegionAttachment;
 import com.esotericsoftware.spine.attachments.SkeletonAttachment;
-import com.esotericsoftware.spine.attachments.MeshAttachment;
 
 public class SkeletonMeshRenderer extends SkeletonRenderer<PolygonSpriteBatch> {
 	
@@ -48,14 +48,13 @@ public class SkeletonMeshRenderer extends SkeletonRenderer<PolygonSpriteBatch> {
 	@SuppressWarnings("null")
 	public void draw (PolygonSpriteBatch batch, Skeleton skeleton) {
 		boolean premultipliedAlpha = this.premultipliedAlpha;
-		BlendMode blendMode = null;
 
 		float[] vertices = null;
 		short[] triangles = null;
 		Array<Slot> drawOrder = skeleton.drawOrder;
 		for (int i = 0, n = drawOrder.size; i < n; i++) {
 			Slot slot = drawOrder.get(i);
-			Attachment attachment = slot.getAttachment();
+			Attachment attachment = slot.attachment;
 			Texture texture = null;
 			if (attachment instanceof RegionAttachment) {
 				RegionAttachment region = (RegionAttachment)attachment;
@@ -93,9 +92,8 @@ public class SkeletonMeshRenderer extends SkeletonRenderer<PolygonSpriteBatch> {
 			}
 
 			if (texture != null) {
-				BlendMode slotBlendMode = slot.data.getBlendMode();
-				if (useSlotBlending && slotBlendMode != blendMode) {
-					blendMode = slotBlendMode;
+				if (useSlotBlending) {
+					BlendMode blendMode = slot.data.getBlendMode();
 					batch.setBlendFunction(blendMode.getSource(premultipliedAlpha), blendMode.getDest());
 				}
 				batch.draw(texture, vertices, 0, vertices.length, triangles, 0, triangles.length);

@@ -31,6 +31,8 @@
 
 package com.esotericsoftware.spine;
 
+import java.util.Iterator;
+
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.ObjectMap.Entry;
@@ -93,6 +95,10 @@ public class Skin {
 		return name;
 	}
 
+	public Iterator<Attachment> attachments () {
+		return attachments.values().iterator();
+	}
+
 	public String toString () {
 		return name;
 	}
@@ -102,7 +108,7 @@ public class Skin {
 		for (Entry<Key, Attachment> entry : oldSkin.attachments.entries()) {
 			int slotIndex = entry.key.slotIndex;
 			Slot slot = skeleton.slots.get(slotIndex);
-			if (slot.getAttachment() == entry.value) {
+			if (slot.attachment == entry.value) {
 				Attachment attachment = getAttachment(slotIndex, entry.key.name);
 				if (attachment != null) slot.setAttachment(attachment);
 			}
